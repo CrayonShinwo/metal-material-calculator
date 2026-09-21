@@ -1,0 +1,49 @@
+{
+  "id": "./",
+  "name": "金属材料计算器",
+  "short_name": "材料计算器",
+  "description": "金属材料重量快速计算：板材、圆棒、方棒、六角棒、圆管、方管、角钢、槽钢、工字钢，内置 16 种常见金属密度，支持自定义密度与离线使用。",
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#14171B",
+  "theme_color": "#14171B",
+  "prefer_related_applications": false,
+  "categories": ["utilities", "productivity"],
+  "icons": [
+    {
+      "src": "./assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./assets/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./assets/icon-1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

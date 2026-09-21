@@ -1,0 +1,10 @@
+{
+  "name": "metal-material-calculator",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "金属材料重量计算 PWA：板材、圆棒、方棒、六角棒、圆管、方管、角钢",
+  "scripts": {
+    "test": "node tests/calc.test.js"
+  }
+}

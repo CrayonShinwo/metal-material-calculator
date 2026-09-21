@@ -1,0 +1,149 @@
+/* 结果层：结果面板、统计卡片、复制按钮、页脚说明 */
+.formula-note {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.result-panel {
+  border-color: rgba(255, 196, 0, 0.35);
+  background: linear-gradient(180deg, #1F2419, #191E25);
+}
+
+.result-meta {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 14px;
+  letter-spacing: 0.04em;
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.stat {
+  background: rgba(16, 19, 24, 0.7);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat span {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+}
+
+.stat b {
+  font-size: 22px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+
+.stat b small {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 500;
+  margin-left: 2px;
+}
+
+.stat-main {
+  grid-column: 1 / -1;
+  border-color: rgba(255, 196, 0, 0.4);
+  background: rgba(255, 196, 0, 0.06);
+}
+
+.stat-main b {
+  font-size: clamp(40px, 11vw, 64px);
+  color: var(--yellow);
+  font-weight: 800;
+}
+
+.stat-main b.long {
+  font-size: clamp(24px, 6vw, 40px);
+}
+
+.stat-main b small {
+  color: var(--yellow);
+  font-size: 16px;
+}
+
+.stat-money b {
+  color: #9AD18A;
+}
+
+.err {
+  grid-column: 1 / -1;
+  color: var(--danger);
+  font-size: 14px;
+  padding: 10px 0;
+}
+
+.result-actions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.copy-btn {
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.copy-btn:hover {
+  border-color: var(--yellow);
+  color: var(--yellow);
+}
+
+.footer {
+  padding: 0 20px 32px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.footer summary {
+  cursor: pointer;
+  color: var(--text);
+  margin-bottom: 8px;
+  letter-spacing: 0.04em;
+}
+
+.footer details p {
+  margin-bottom: 12px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* 结果盖章动画 */
+.result-panel.stamp .stat-main b {
+  animation: stamp 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.15);
+}
+
+@keyframes stamp {
+  from {
+    transform: scale(1.06);
+    opacity: 0.3;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

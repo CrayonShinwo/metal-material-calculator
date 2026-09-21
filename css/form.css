@@ -1,0 +1,101 @@
+/* 表单层：材料/型材下拉、尺寸输入、单位切换 */
+.select {
+  width: 100%;
+  padding: 12px 14px;
+  background-color: #101318;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 16px;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.select:focus {
+  border-color: var(--yellow);
+  box-shadow: 0 0 0 3px rgba(255, 196, 0, 0.14);
+}
+
+.custom-density {
+  margin-top: 12px;
+}
+
+.dims-grid,
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field-label {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+
+.field-label small {
+  color: var(--yellow);
+  font-weight: 700;
+}
+
+input {
+  width: 100%;
+  padding: 12px 14px;
+  background: #101318;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+input:focus {
+  border-color: var(--yellow);
+  box-shadow: 0 0 0 3px rgba(255, 196, 0, 0.14);
+}
+
+input::placeholder {
+  color: #4A5560;
+}
+
+.seg {
+  display: inline-flex;
+  padding: 3px;
+  background: #101318;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  gap: 2px;
+}
+
+.seg-btn {
+  padding: 6px 14px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: var(--muted);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.seg-btn:active {
+  transform: scale(0.97);
+}
+
+.seg-btn.active {
+  background: var(--yellow);
+  color: #14171B;
+}

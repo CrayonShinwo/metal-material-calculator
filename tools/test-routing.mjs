@@ -131,4 +131,6 @@ for (const [i, [name, ua, expect]] of cases.entries()) {
 
 console.log("=".repeat(78));
 console.log(failures === 0 ? `全部 ${cases.length} 个浏览器分流正确` : `${failures} 个用例失败`);
-process.exit(failures ? 1 : 0);
+// 用 exitCode 而不是 process.exit()：动态 import 多个模块后立刻 process.exit()
+// 会让 Node 在 Windows 上以 0xC0000409 崩在退出阶段，导致"测试全过但退出码非 0"。
+process.exitCode = failures ? 1 : 0;

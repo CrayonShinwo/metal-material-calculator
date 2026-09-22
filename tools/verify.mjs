@@ -74,4 +74,5 @@ console.log(`live sw.js is v13 and precaches download.html: ${v13}`);
 
 const bad = leaks.length + missing + (liveOk ? 0 : 1) + (v13 ? 0 : 1) + (dlOk ? 0 : 1);
 console.log(bad === 0 ? "\nVERIFY OK" : `\n${bad} problem(s)`);
-process.exit(bad === 0 ? 0 : 1);
+// exitCode（不是 process.exit）以避免 Node 在 Windows 上退出阶段崩溃
+process.exitCode = bad === 0 ? 0 : 1;

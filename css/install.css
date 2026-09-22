@@ -69,3 +69,35 @@
 .install-note:empty {
   display: none;
 }
+
+.install-download {
+  margin-top: 16px;
+}
+
+.install-download a {
+  display: block;
+  padding: 12px 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.install-download a:hover,
+.install-download a:active {
+  border-color: var(--yellow);
+  color: var(--yellow);
+}
+
+.install-download span {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+  text-align: center;
+}

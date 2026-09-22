@@ -112,6 +112,7 @@ let tipEl = null;
 let stepsEl = null;
 let btnEl = null;
 let noteEl = null;
+let dlEl = null;
 
 function render() {
   if (!card) return;
@@ -128,6 +129,8 @@ function render() {
   noteEl.textContent = guide.note || "";
   // 只有拿到原生安装事件时才显示按钮，避免点了没反应
   btnEl.hidden = !deferredPrompt;
+  // 直接下载 APK 只对安卓有意义
+  if (dlEl) dlEl.hidden = !isAndroid;
 }
 
 window.addEventListener("beforeinstallprompt", (event) => {
@@ -148,6 +151,7 @@ function init() {
   stepsEl = document.getElementById("install-steps");
   btnEl = document.getElementById("install-btn");
   noteEl = document.getElementById("install-note");
+  dlEl = document.getElementById("install-download");
   if (!card) return;
 
   if (btnEl) {

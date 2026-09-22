@@ -24,9 +24,14 @@ const isIOS =
 
 const isAndroid = /Android/i.test(ua);
 
-// App 内置浏览器与部分国产浏览器：不支持安装 PWA，引导用户换 Chrome / Edge。
-const isInAppOrUnsupported =
-  /MicroMessenger|QQ\/|QQBrowser|Weibo|Alipay|DingTalk|UCBrowser|UBrowser|Quark|BaiduHD|baidubrowser|SogouMobileBrowser|MiuiBrowser|HuaweiBrowser|HeyTapBrowser|VivoBrowser/i.test(
+// ① 社交 App 的内置浏览器：不只装不了 PWA，连 APK 下载都会被客户端拦掉，
+//    必须先把链接甩到真正的浏览器里。
+const isInAppBrowser = /MicroMessenger|QQ\/|Weibo|Alipay|DingTalk|Feishu|Lark/i.test(ua);
+
+// ② 真正的浏览器、只是装不了 PWA（国产浏览器 / Firefox 等）。
+//    注意：这类浏览器**下载 APK 完全没问题**，所以绝不能劝用户去装 Chrome。
+const isNonInstallableBrowser =
+  /QQBrowser|UCBrowser|UBrowser|Quark|BaiduHD|baidubrowser|SogouMobileBrowser|MiuiBrowser|HuaweiBrowser|HeyTapBrowser|VivoBrowser|Firefox|FxiOS/i.test(
     ua
   );
 
@@ -63,36 +68,50 @@ function buildGuide() {
   }
 
   if (isAndroid) {
-    if (isInAppOrUnsupported) {
+    // 社交 App 内置浏览器：先把链接甩到真正的浏览器
+    if (isInAppBrowser) {
       return {
-        tip: "当前浏览器不支持安装，请先用 Chrome 打开本页",
+        tip: "当前是 App 内置浏览器，下载会被拦截，请先「在浏览器打开」",
         steps: [
-          "点右上角「⋯」→「在浏览器打开」（或「用系统浏览器打开」）",
-          "在 Chrome 中打开本页，点右上角「⋮」",
-          "选择「安装应用」或「添加到主屏幕」，确认「安装」"
+          "点右上角「⋯」→「在浏览器打开」（任意浏览器都行，不用特意装 Chrome）",
+          "在浏览器里回到本页，点下面的按钮下载安装包",
+          "打开下载好的文件，系统询问时允许「安装未知来源应用」"
         ],
-        note: "微信、QQ、UC、夸克、小米/华为自带浏览器都无法把网页装成桌面 App。"
+        note: "微信、QQ、钉钉等都会拦截 .apk 下载，换成任意浏览器即可。"
       };
     }
+    // 三星浏览器：能安装，但菜单路径不同
     if (isSamsungInternet) {
       return {
-        tip: "在三星浏览器中三步装到桌面，之后全屏、离线可用",
+        tip: "直接下载安装包即可，不需要 Chrome",
         steps: [
-          "点右下角「☰」菜单",
-          "选择「添加页面到」→「主屏幕」",
-          "确认「添加」，桌面会出现「材料计算器」图标"
+          "点下面的按钮下载安装包，再点开下载好的文件",
+          "系统询问时允许「安装未知来源应用」",
+          "想装成网页 App：点右下角「☰」→「添加页面到」→「主屏幕」"
         ],
-        note: "也可以安装 Chrome 后打开本页，点「⋮」→「安装应用」。"
+        note: "下载安装包这一步，任何浏览器都一样。"
+      };
+    }
+    // 能装 PWA 的浏览器（Chrome / Edge 等）
+    if (!isNonInstallableBrowser) {
+      return {
+        tip: "两种方式任选：点「立即安装」一键装成 App，或直接下载安装包",
+        steps: [
+          "想一键装成 App：点上面的「立即安装」",
+          "想装安装包：点下面的按钮下载，再点开下载好的文件",
+          "系统询问时允许「安装未知来源应用」"
+        ],
+        note: "任何浏览器都能下载安装包，不一定要用 Chrome。"
       };
     }
     return {
-      tip: "在 Chrome / Edge 中三步装到桌面，之后全屏、离线可用",
+      tip: "直接下载安装包即可 —— 任何浏览器都能下载，不需要 Chrome",
       steps: [
-        "点右上角「⋮」（Edge 是「…」）",
-        "选择「安装应用」，若没有该项就选「添加到主屏幕」",
-        "确认「安装」，桌面会出现「材料计算器」图标"
+        "点下面的按钮下载安装包（若没反应，长按按钮选「下载链接」）",
+        "打开下载好的文件，系统询问时允许「安装未知来源应用」",
+        "装好后桌面出现图标，全屏运行、可离线"
       ],
-      note: "如果点「立即安装」无反应，就按上面步骤从菜单里手动添加。"
+      note: "只有想用浏览器「添加到主屏幕」装成网页 App 时才需要 Chrome / Edge，装安装包不用。"
     };
   }
 
@@ -102,7 +121,7 @@ function buildGuide() {
       "点地址栏右侧的「安装」图标（⊕ 或显示器图标）",
       "或打开「⋮」菜单 →「投放、保存和共享」→「安装页面为应用」"
     ],
-    note: "安卓手机同样支持：用 Chrome 打开本页即可安装。"
+    note: "安卓手机同样支持：任何浏览器都能下载安装包，或用 Chrome / Edge 一键安装。"
   };
 }
 
@@ -176,3 +195,7 @@ function init() {
 }
 
 init();
+
+// 导出给自动化测试用：tools/test-routing.mjs 会在 Node 里用不同 UA 调它，
+// 确保「任何浏览器都能下载 APK、只有内置浏览器才需要跳出去」这条分流永远成立。
+export { buildGuide };

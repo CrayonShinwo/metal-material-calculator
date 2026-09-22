@@ -1,9 +1,10 @@
 // Service Worker：预缓存静态资源，离线可用（缓存优先 + 后台刷新）
-const CACHE_NAME = "metal-calc-v12";
+const CACHE_NAME = "metal-calc-v13";
 
 const PRECACHE = [
   "./",
   "./index.html",
+  "./download.html",
   "./css/base.css",
   "./css/form.css",
   "./css/result.css",

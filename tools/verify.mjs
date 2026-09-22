@@ -6,8 +6,24 @@ const SITE = "https://crayonshinwo.github.io/metal-material-calculator";
 
 const FORBIDDEN = /(\.keystore$|\.jks$|\.p12$|signing[^/]*\.json$|签名信息|password|secret|token)/i;
 
-const treeRes = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/git/trees/main?recursive=1`);
+// 带上 token 可以避免 api.github.com 的匿名限流（每 IP 每小时 60 次）
+const TOKEN = process.env.GH_TOKEN;
+const apiHeaders = { Accept: "application/vnd.github+json", "User-Agent": "dsh-metal-calc-verify" };
+if (TOKEN) apiHeaders.Authorization = `Bearer ${TOKEN}`;
+
+const treeRes = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/git/trees/main?recursive=1`, {
+  headers: apiHeaders
+});
+if (!treeRes.ok) {
+  throw new Error(
+    `GitHub API 返回 HTTP ${treeRes.status}。` +
+      (treeRes.status === 403 || treeRes.status === 429
+        ? "这是匿名请求限流（每 IP 每小时 60 次）；设置 GH_TOKEN 后再运行即可。"
+        : "")
+  );
+}
 const tree = await treeRes.json();
+if (!Array.isArray(tree.tree)) throw new Error(`GitHub API 返回了意外内容: ${JSON.stringify(tree).slice(0, 200)}`);
 const paths = tree.tree.filter((t) => t.type === "blob").map((t) => t.path).sort();
 
 console.log(`repo has ${paths.length} files:\n`);

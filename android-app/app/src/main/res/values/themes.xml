@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--
+      启动主题：把 windowBackground 设成"深色底 + 居中 kg 六边形"，
+      冷启动时第一帧就是品牌图，与旧版 TWA 的启动图观感一致，
+      但这次它背后是真的有内容，不会永远停在这一帧。
+    -->
+    <style name="Theme.MetalCalc" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="android:statusBarColor">@color/brand_bg</item>
+        <item name="android:navigationBarColor">@color/brand_bg</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
+
+</resources>

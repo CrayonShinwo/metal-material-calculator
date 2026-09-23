@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">材料计算器</string>
+    <string name="load_failed">页面加载失败，请重新打开应用</string>
+</resources>

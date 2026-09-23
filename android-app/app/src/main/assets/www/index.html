@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>金属材料计算器</title>
+  <meta name="description" content="金属材料重量快速计算：板材、圆棒、方棒、六角棒、圆管、方管、角钢、槽钢、工字钢，内置 16 种常见金属密度，支持自定义密度与离线使用。">
+  <meta name="theme-color" content="#14171B">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="材料计算器">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="./assets/icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="./assets/icon-512.png">
+  <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/form.css">
+  <link rel="stylesheet" href="./css/result.css">
+  <link rel="stylesheet" href="./css/install.css">
+</head>
+<body>
+  <header class="app-header reveal">
+    <div class="logo" aria-hidden="true">kg</div>
+    <div class="header-text">
+      <h1>金属材料计算器</h1>
+      <p class="subtitle">METAL WEIGHT CALCULATOR · 密度 × 体积</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel reveal" style="animation-delay:.05s">
+      <h2 class="panel-title">材料</h2>
+      <select id="material-select" class="select"></select>
+      <div class="field custom-density" id="custom-density-wrap" hidden>
+        <span class="field-label">自定义密度 <small>g/cm³</small></span>
+        <input type="number" id="custom-density" min="0" step="0.01" placeholder="如 7.85" inputmode="decimal">
+      </div>
+    </section>
+
+    <section class="panel reveal" style="animation-delay:.1s">
+      <h2 class="panel-title">型材</h2>
+      <select id="shape-select" class="select"></select>
+    </section>
+
+    <section class="panel reveal" style="animation-delay:.15s">
+      <div class="panel-head">
+        <h2 class="panel-title">尺寸</h2>
+        <div class="seg" id="unit-toggle" role="group" aria-label="尺寸单位">
+          <button type="button" class="seg-btn" data-unit="mm">mm</button>
+          <button type="button" class="seg-btn" data-unit="cm">cm</button>
+          <button type="button" class="seg-btn" data-unit="m">m</button>
+        </div>
+      </div>
+      <div class="dims-grid" id="dims-list"></div>
+      <p class="formula-note" id="formula-note"></p>
+    </section>
+
+    <section class="panel reveal" style="animation-delay:.2s">
+      <div class="options-grid">
+        <label class="field">
+          <span class="field-label">数量</span>
+          <input type="number" id="quantity" min="1" step="1" value="1" inputmode="numeric">
+        </label>
+        <label class="field">
+          <span class="field-label">单价 ¥/kg</span>
+          <input type="number" id="price" min="0" step="0.01" placeholder="选填" inputmode="decimal">
+        </label>
+        <div class="field">
+          <span class="field-label">结果单位</span>
+          <div class="seg" id="result-unit-toggle" role="group" aria-label="结果单位">
+            <button type="button" class="seg-btn" data-unit="kg">kg</button>
+            <button type="button" class="seg-btn" data-unit="g">g</button>
+            <button type="button" class="seg-btn" data-unit="t">t</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel result-panel reveal" id="result-panel" style="animation-delay:.25s">
+      <div class="result-meta" id="result-meta"></div>
+      <div class="result-grid" id="result-grid"></div>
+      <div class="result-actions">
+        <button type="button" class="copy-btn" id="copy-btn">复制结果</button>
+      </div>
+    </section>
+
+    <footer class="footer reveal" style="animation-delay:.35s">
+
+      <noscript>
+        <p><b>安卓：</b>任何浏览器打开本页 → 下载安装包安装；或用 Chrome 点右上角「⋮」→「安装应用」。</p>
+        <p><b>iPhone：</b>用 Safari 打开本页 → 点底部「分享」→「添加到主屏幕」。</p>
+      </noscript>
+      <p class="muted">版本 <span id="version-tag"></span> · 内置密度为行业常用值，精确用料请以材料检验报告为准。</p>
+    </footer>
+  </main>
+
+  <script type="module" src="./js/app.js"></script>
+  <script type="module" src="./js/install.js"></script>
+</body>
+</html>

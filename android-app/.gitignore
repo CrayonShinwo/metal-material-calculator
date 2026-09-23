@@ -1,0 +1,15 @@
+# Gradle / Android Studio
+.gradle/
+build/
+local.properties
+captures/
+.externalNativeBuild/
+.cxx/
+*.iml
+.idea/
+
+# 构建产物：APK/AAB 统一放在仓库的 release/ 目录（与旧的 PWABuilder 流程保持一致）
+*.apk
+*.aab
+*.jks
+*.keystore

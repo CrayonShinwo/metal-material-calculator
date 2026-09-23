@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 与网站 base.css 里的配色保持一致 -->
+    <color name="brand_bg">#FF14171B</color>
+    <color name="brand_yellow">#FFFFC400</color>
+    <color name="ic_launcher_background">#FF14171B</color>
+</resources>

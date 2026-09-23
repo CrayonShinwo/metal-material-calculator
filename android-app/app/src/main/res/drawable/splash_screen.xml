@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 冷启动第一帧：深色底 + 居中的 kg 六边形（图标由 tools/bundle-offline.mjs 从 site/assets 复制而来） -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/brand_bg" />
+    <item
+        android:width="132dp"
+        android:height="132dp"
+        android:gravity="center">
+        <bitmap
+            android:gravity="fill"
+            android:src="@mipmap/ic_launcher_foreground" />
+    </item>
+</layer-list>

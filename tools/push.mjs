@@ -1,12 +1,15 @@
-// Push site/ + tools/ + ANDROID.md + the built APK/AAB to the GitHub repo in ONE commit.
-// Everything goes through api.github.com (github.com itself is blocked on this network).
+// Push site/ + tools/ + android-app/ + ANDROID.md + the built APK/AAB to the GitHub repo in ONE commit.
+// Everything goes through api.github.com (github.com itself may be blocked on some networks).
 //
-// Usage (run from the project root):  node tools/push.mjs <token>
+// Usage (run from the project root):
+//   node tools/push.mjs --dry-run        # 只列出会被上传的文件（不联网、不需要 token）★ 推荐先跑这个
+//   node tools/push.mjs <token>          # 或先 export GH_TOKEN=...
 import fs from "node:fs";
 import path from "node:path";
 
-const TOKEN = process.env.GH_TOKEN || process.argv[2];
-if (!TOKEN) { console.error("usage: node tools/push.mjs <token>"); process.exit(1); }
+const DRY_RUN = process.argv.includes("--dry-run");
+const TOKEN = process.env.GH_TOKEN || process.argv.slice(2).find((a) => !a.startsWith("--"));
+if (!TOKEN && !DRY_RUN) { console.error("usage: node tools/push.mjs <token>   |   node tools/push.mjs --dry-run"); process.exit(1); }
 
 const OWNER = "CrayonShinwo";
 const REPO = "metal-material-calculator";
@@ -15,6 +18,9 @@ const API = "https://api.github.com";
 
 // belt-and-braces: never publish anything that looks like a secret
 const FORBIDDEN = /(\.keystore$|\.jks$|\.p12$|signing[^/]*\.json$|签名信息|password|secret|token)/i;
+
+// never publish build outputs / IDE state
+const SKIP_DIRS = /(^|\/)(\.gradle|\.idea|build|node_modules|captures)(\/|$)/;
 
 const files = new Map();
 let skipped = 0;
@@ -27,8 +33,12 @@ function walk(dir, prefix = "") {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, e.name);
     const rel = prefix ? `${prefix}/${e.name}` : e.name;
-    if (e.isDirectory()) walk(full, rel);
-    else add(rel, fs.readFileSync(full));
+    if (e.isDirectory()) {
+      if (SKIP_DIRS.test(rel)) continue;
+      walk(full, rel);
+    } else {
+      add(rel, fs.readFileSync(full));
+    }
   }
   return true;
 }
@@ -36,6 +46,10 @@ function walk(dir, prefix = "") {
 console.log("collecting files ...");
 if (!walk("site")) { console.error("\nsite/ not found - run `node tools/pull.mjs` first."); process.exit(2); }
 walk("tools", "tools");
+// 安卓离线工程（含已生成的 assets/www 与图标，克隆下来即可直接出包）
+if (!walk("android-app", "android-app")) {
+  console.log("  (android-app/ not found - skipped)");
+}
 if (fs.existsSync("ANDROID.md")) add("ANDROID.md", fs.readFileSync("ANDROID.md"));
 
 const REL = "release";
@@ -51,6 +65,20 @@ for (const [ext, dest] of [[".apk", "download/metal-material-calculator.apk"], [
 }
 console.log(`${files.size} files to upload${skipped ? `, ${skipped} secret(s) refused` : ""}`);
 
+// ------------------------------------------------------------------ dry run
+if (DRY_RUN) {
+  let bytes = 0;
+  console.log("\n--dry-run：以下文件会被上传（没有联网、没有上传）");
+  for (const [rel, buf] of [...files.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
+    bytes += buf.length;
+    console.log(`  ${rel.padEnd(58)} ${String(buf.length).padStart(9)}`);
+  }
+  console.log(`\n合计 ${files.size} 个文件 / ${(bytes / 1024 / 1024).toFixed(2)} MB`);
+  console.log(`release/ 只会上传最新的 APK/AAB 到 download/，密钥与密码文件不会被读取，也不会上传。`);
+  process.exit(0);
+}
+
+// ------------------------------------------------------------------ upload
 async function api(method, endpoint, body) {
   const res = await fetch(API + endpoint, {
     method,
@@ -95,7 +123,7 @@ if (baseTree) treeBody.base_tree = baseTree;
 const tree = must(await api("POST", `/repos/${OWNER}/${REPO}/git/trees`, treeBody), "POST tree");
 const commit = must(
   await api("POST", `/repos/${OWNER}/${REPO}/git/commits`, {
-    message: "chore: 同步网站、工具链与安卓安装说明",
+    message: "chore: 同步网站、工具链、安卓离线工程与安装说明",
     tree: tree.sha,
     parents
   }),
